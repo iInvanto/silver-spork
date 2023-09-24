@@ -1,7 +1,8 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, RequestMethod } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import configuration from "./config/configuration";
 import { DbModule } from "./database/database.module";
+import { LoggerMiddleware } from "./middleware/logger.middleware";
 import { UsersModule } from "./users/users.module";
 
 @Module({
@@ -15,4 +16,10 @@ import { UsersModule } from "./users/users.module";
     UsersModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes({ path: "users", method: RequestMethod.GET });
+  }
+}
