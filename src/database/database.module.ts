@@ -21,7 +21,7 @@ import { DatabaseConfig } from "src/config/configuration";
           username,
           password,
           autoLoadEntities: true,
-          synchronize: true, // This option should not be use in production
+          synchronize: false, // This option should not be use in production
         };
       },
       inject: [ConfigService],

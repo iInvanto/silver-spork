@@ -30,21 +30,24 @@ async function bootstrap() {
     });
   } else {
     const app = await NestFactory.create(AppModule);
-
-    const config = new DocumentBuilder()
-      .setTitle("Users CRUD")
-      .setDescription("Learning Users CRUD in Nest.js")
-      .setVersion("1.0")
-      .addTag("users")
-      .build();
-
-    const options: SwaggerDocumentOptions = {
-      deepScanRoutes: true,
-    };
-    const document = SwaggerModule.createDocument(app, config, options);
-    SwaggerModule.setup("swagger-api", app, document);
-
     const configService = app.get(ConfigService);
+
+    const isDevelopment = configService.get<number>("isDevelopment");
+    if (isDevelopment) {
+      const config = new DocumentBuilder()
+        .setTitle("Users CRUD")
+        .setDescription("Learning Users CRUD in Nest.js")
+        .setVersion("1.0")
+        .addTag("users")
+        .build();
+
+      const options: SwaggerDocumentOptions = {
+        deepScanRoutes: true,
+      };
+      const document = SwaggerModule.createDocument(app, config, options);
+      SwaggerModule.setup("swagger-api", app, document);
+    }
+
     const port = configService.get<number>("port");
     await app.listen(port);
 

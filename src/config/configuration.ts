@@ -8,11 +8,13 @@ export interface DatabaseConfig {
 
 export interface AppConfig {
   port: number;
+  isDevelopment: boolean;
   database: DatabaseConfig;
 }
 
 const configs = (): AppConfig => ({
   port: parseInt(process.env.PORT, 10) || 3000,
+  isDevelopment: process.env.ENVIRONMENT !== "prod",
   database: {
     database: process.env.DATABASE_NAME,
     host: process.env.DATABASE_HOST,
